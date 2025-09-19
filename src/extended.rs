@@ -1648,6 +1648,19 @@ impl ProcessorCapacityAndFeatureInfo {
         self
     }
 
+    /// Memory Bandwidth Enforcement supported if set.
+    ///
+    /// # Platforms
+    /// ✅ AMD ❌ Intel (reserved=false)
+    pub fn has_mbe(&self) -> bool {
+        self.ebx.contains(ProcessorCapacityAndFeatureEbx::MBE)
+    }
+
+    pub fn set_mbe(&mut self, bit: bool) -> &mut Self {
+        self.ebx.set(ProcessorCapacityAndFeatureEbx::MBE, bit);
+        self
+    }
+
     /// MCOMMIT instruction supported if set.
     ///
     /// # Platforms
@@ -1674,6 +1687,19 @@ impl ProcessorCapacityAndFeatureInfo {
         self
     }
 
+    /// Indirect Branch Prediction Barrier supported if set.
+    ///
+    /// # Platforms
+    /// ✅ AMD ✅ Intel
+    pub fn has_ibpb(&self) -> bool {
+        self.ebx.contains(ProcessorCapacityAndFeatureEbx::IBPB)
+    }
+
+    pub fn set_ibpb(&mut self, bit: bool) -> &mut Self {
+        self.ebx.set(ProcessorCapacityAndFeatureEbx::IBPB, bit);
+        self
+    }
+
     /// WBINVD/WBNOINVD are interruptible if set.
     ///
     /// # Platforms
@@ -1686,6 +1712,96 @@ impl ProcessorCapacityAndFeatureInfo {
     pub fn set_int_wbinvd(&mut self, bit: bool) -> &mut Self {
         self.ebx
             .set(ProcessorCapacityAndFeatureEbx::INT_WBINVD, bit);
+        self
+    }
+
+    /// Indirect Branch Restricted Speculation supported if set.
+    ///
+    /// # Platforms
+    /// ✅ AMD ❌ Intel (reserved=false)
+    pub fn has_ibrs(&self) -> bool {
+        self.ebx
+            .contains(ProcessorCapacityAndFeatureEbx::IBRS)
+    }
+
+    pub fn set_ibrs(&mut self, bit: bool) -> &mut Self {
+        self.ebx
+            .set(ProcessorCapacityAndFeatureEbx::IBRS, bit);
+        self
+    }
+
+    /// Single Thread Indirect Branch Prediction supported if set.
+    ///
+    /// # Platforms
+    /// ✅ AMD ❌ Intel (reserved=false)
+    pub fn has_stibp(&self) -> bool {
+        self.ebx
+            .contains(ProcessorCapacityAndFeatureEbx::STIBP)
+    }
+
+    pub fn set_stibp(&mut self, bit: bool) -> &mut Self {
+        self.ebx
+            .set(ProcessorCapacityAndFeatureEbx::STIBP, bit);
+        self
+    }
+
+    /// Setting IBRS to 1 once is recommended.
+    ///
+    /// # Platforms
+    /// ✅ AMD ❌ Intel (reserved=false)
+    pub fn has_ibrs_always_on(&self) -> bool {
+        self.ebx
+            .contains(ProcessorCapacityAndFeatureEbx::IBRS_ALWAYS_ON)
+    }
+
+    pub fn set_ibrs_always_on(&mut self, bit: bool) -> &mut Self {
+        self.ebx
+            .set(ProcessorCapacityAndFeatureEbx::IBRS_ALWAYS_ON, bit);
+        self
+    }
+
+    /// Setting STIBP to 1 once is recommended.
+    ///
+    /// # Platforms
+    /// ✅ AMD ❌ Intel (reserved=false)
+    pub fn has_stibp_always_on(&self) -> bool {
+        self.ebx
+            .contains(ProcessorCapacityAndFeatureEbx::STIBP_ALWAYS_ON)
+    }
+
+    pub fn set_stibp_always_on(&mut self, bit: bool) -> &mut Self {
+        self.ebx
+            .set(ProcessorCapacityAndFeatureEbx::STIBP_ALWAYS_ON, bit);
+        self
+    }
+
+    /// IBRS is preferred to software solution.
+    ///
+    /// # Platforms
+    /// ✅ AMD ❌ Intel (reserved=false)
+    pub fn has_ibrs_preferred(&self) -> bool {
+        self.ebx
+            .contains(ProcessorCapacityAndFeatureEbx::IBRS_PREFERRED)
+    }
+
+    pub fn set_ibrs_preferred(&mut self, bit: bool) -> &mut Self {
+        self.ebx
+            .set(ProcessorCapacityAndFeatureEbx::IBRS_PREFERRED, bit);
+        self
+    }
+
+    /// IBRS provides same mode speculation limits.
+    ///
+    /// # Platforms
+    /// ✅ AMD ❌ Intel (reserved=false)
+    pub fn has_ibrs_same_mode(&self) -> bool {
+        self.ebx
+            .contains(ProcessorCapacityAndFeatureEbx::IBRS_SAME_MODE)
+    }
+
+    pub fn set_ibrs_same_mode(&mut self, bit: bool) -> &mut Self {
+        self.ebx
+            .set(ProcessorCapacityAndFeatureEbx::IBRS_SAME_MODE, bit);
         self
     }
 
@@ -1716,6 +1832,111 @@ impl ProcessorCapacityAndFeatureInfo {
     pub fn set_invlpgb_nested(&mut self, bit: bool) -> &mut Self {
         self.ebx
             .set(ProcessorCapacityAndFeatureEbx::INVLPGB_NESTED, bit);
+        self
+    }
+
+    /// Speculative Store Bypass Disable is supported if set.
+    ///
+    /// # Platforms
+    /// ✅ AMD ❌ Intel (reserved=false)
+    pub fn has_ssbd(&self) -> bool {
+        self.ebx
+            .contains(ProcessorCapacityAndFeatureEbx::SSBD)
+    }
+
+    pub fn set_ssbd(&mut self, bit: bool) -> &mut Self {
+        self.ebx
+            .set(ProcessorCapacityAndFeatureEbx::SSBD, bit);
+        self
+    }
+
+    /// Use `VIRT_SPEC_CTL` MSR (`C001_011Fh`) for SSBD.
+    ///
+    /// # Platforms
+    /// ✅ AMD ❌ Intel (reserved=false)
+    pub fn has_ssbd_virt_spec_ctl(&self) -> bool {
+        self.ebx
+            .contains(ProcessorCapacityAndFeatureEbx::SSBD_VIRT_SPEC_CTRL)
+    }
+
+    pub fn set_ssbd_virt_spec_ctl(&mut self, bit: bool) -> &mut Self {
+        self.ebx
+            .set(ProcessorCapacityAndFeatureEbx::SSBD_VIRT_SPEC_CTRL, bit);
+        self
+    }
+
+    /// SSBD not needed on this processor.
+    ///
+    /// # Platforms
+    /// ✅ AMD ❌ Intel (reserved=false)
+    pub fn has_ssbd_not_required(&self) -> bool {
+        self.ebx
+            .contains(ProcessorCapacityAndFeatureEbx::SSBD_NOT_REQUIRED)
+    }
+
+    pub fn set_ssbd_not_required(&mut self, bit: bool) -> &mut Self {
+        self.ebx
+            .set(ProcessorCapacityAndFeatureEbx::SSBD_NOT_REQUIRED, bit);
+        self
+    }
+
+    /// Collaborative Processor Performance Control is supported if set.
+    ///
+    /// # Platforms
+    /// ✅ AMD ❌ Intel (reserved=false)
+    pub fn has_cppc(&self) -> bool {
+        self.ebx
+            .contains(ProcessorCapacityAndFeatureEbx::CPPC)
+    }
+
+    pub fn set_cppc(&mut self, bit: bool) -> &mut Self {
+        self.ebx
+            .set(ProcessorCapacityAndFeatureEbx::CPPC, bit);
+        self
+    }
+
+    /// Predictive Store Forward Disable is supported if set.
+    ///
+    /// # Platforms
+    /// ✅ AMD ❌ Intel (reserved=false)
+    pub fn has_psfd(&self) -> bool {
+        self.ebx
+            .contains(ProcessorCapacityAndFeatureEbx::PSFD)
+    }
+
+    pub fn set_psfd(&mut self, bit: bool) -> &mut Self {
+        self.ebx
+            .set(ProcessorCapacityAndFeatureEbx::PSFD, bit);
+        self
+    }
+
+    /// The processor is not affected by branch type confusion if set.
+    ///
+    /// # Platforms
+    /// ✅ AMD ❌ Intel (reserved=false)
+    pub fn has_btc_no(&self) -> bool {
+        self.ebx
+            .contains(ProcessorCapacityAndFeatureEbx::BTC_NO)
+    }
+
+    pub fn set_btc_no(&mut self, bit: bool) -> &mut Self {
+        self.ebx
+            .set(ProcessorCapacityAndFeatureEbx::BTC_NO, bit);
+        self
+    }
+
+    /// IBPB clears return address predictor.
+    ///
+    /// # Platforms
+    /// ✅ AMD ❌ Intel (reserved=false)
+    pub fn has_ibpb_ret(&self) -> bool {
+        self.ebx
+            .contains(ProcessorCapacityAndFeatureEbx::IBPB_RET)
+    }
+
+    pub fn set_ibpb_ret(&mut self, bit: bool) -> &mut Self {
+        self.ebx
+            .set(ProcessorCapacityAndFeatureEbx::IBPB_RET, bit);
         self
     }
 
@@ -1861,11 +2082,26 @@ bitflags! {
         const RSTR_FP_ERR_PTRS = 1 << 2;
         const INVLPGB = 1 << 3;
         const RDPRU = 1 << 4;
+        const MBE = 1 << 6;
         const MCOMMIT = 1 << 8;
         const WBNOINVD = 1 << 9;
+        const IBPB = 1 << 12;
         const INT_WBINVD = 1 << 13;
+        const IBRS = 1 << 14;
+        const STIBP = 1 << 15;
+        const IBRS_ALWAYS_ON = 1 << 16;
+        const STIBP_ALWAYS_ON = 1 << 17;
+        const IBRS_PREFERRED = 1 << 18;
+        const IBRS_SAME_MODE = 1 << 19;
         const EFER_LMSLE_UNSUPP = 1 << 20;
         const INVLPGB_NESTED = 1 << 21;
+        const SSBD = 1 << 24;
+        const SSBD_VIRT_SPEC_CTRL = 1 << 25;
+        const SSBD_NOT_REQUIRED = 1 << 26;
+        const CPPC = 1 << 27;
+        const PSFD = 1 << 28;
+        const BTC_NO = 1 << 29;
+        const IBPB_RET = 1 << 30;
     }
 }
 
@@ -2218,6 +2454,16 @@ impl PerformanceOptimizationInfo {
         self.eax.set(PerformanceOptimizationInfoEax::FP256, bit);
         self
     }
+
+    /// The internal FP/SIMD execution datapath is 512 bits wide if set.
+    pub fn has_fp512(&self) -> bool {
+        self.eax.contains(PerformanceOptimizationInfoEax::FP512)
+    }
+
+    pub fn set_fp512(&mut self, bit: bool) -> &mut Self {
+        self.eax.set(PerformanceOptimizationInfoEax::FP512, bit);
+        self
+    }
 }
 
 bitflags! {
@@ -2227,6 +2473,7 @@ bitflags! {
         const FP128 = 1 << 0;
         const MOVU = 1 << 1;
         const FP256 = 1 << 2;
+        const FP512 = 1 << 3;
     }
 }
 
@@ -2791,6 +3038,18 @@ impl ExtendedFeatureIdentification2 {
         self
     }
 
+    /// WRMSR to FS.Base, GS.Base, and KernelGSBase MSRs is not serializing.
+    pub fn has_fs_gs_base_write_not_serializing(&self) -> bool {
+        self.eax
+            .contains(ExtendedFeatureIdentification2Eax::FS_GS_BASE_WRITE_NOT_SERIALIZING)
+    }
+
+    pub fn set_fs_gs_base_write_not_serializing(&mut self, bit: bool) -> &mut Self {
+        self.eax
+            .set(ExtendedFeatureIdentification2Eax::FS_GS_BASE_WRITE_NOT_SERIALIZING, bit);
+        self
+    }
+
     /// LFENCE is always dispatch serializing if set
     pub fn has_lfence_always_serializing(&self) -> bool {
         self.eax
@@ -2868,6 +3127,42 @@ impl ExtendedFeatureIdentification2 {
         self
     }
 
+    /// Fast short REP STOSB supported.
+    pub fn has_fast_short_rep_stosb(&self) -> bool {
+        self.eax
+            .contains(ExtendedFeatureIdentification2Eax::FAST_SHORT_REP_STOSB)
+    }
+
+    pub fn set_fast_short_rep_stosb(&mut self, bit: bool) -> &mut Self {
+        self.eax
+            .set(ExtendedFeatureIdentification2Eax::FAST_SHORT_REP_STOSB, bit);
+        self
+    }
+
+    /// Fast short REPE CMPSB supported.
+    pub fn has_fast_short_repe_cmpsb(&self) -> bool {
+        self.eax
+            .contains(ExtendedFeatureIdentification2Eax::FAST_SHORT_REPE_CMPSB)
+    }
+
+    pub fn set_fast_short_repe_cmpsb(&mut self, bit: bool) -> &mut Self {
+        self.eax
+            .set(ExtendedFeatureIdentification2Eax::FAST_SHORT_REPE_CMPSB, bit);
+        self
+    }
+
+    /// MSR PerfEvtSel2[PreciseRetire] is supported.
+    pub fn has_pmc2_precise_retire(&self) -> bool {
+        self.eax
+            .contains(ExtendedFeatureIdentification2Eax::PMC2_PRECISE_RETIRE)
+    }
+
+    pub fn set_pmc2_precise_retire(&mut self, bit: bool) -> &mut Self {
+        self.eax
+            .set(ExtendedFeatureIdentification2Eax::PMC2_PRECISE_RETIRE, bit);
+        self
+    }
+
     /// Prefetch control MSR supported if set
     pub fn has_prefetch_ctl_msr(&self) -> bool {
         self.eax
@@ -2877,6 +3172,42 @@ impl ExtendedFeatureIdentification2 {
     pub fn set_prefetch_ctl_msr(&mut self, bit: bool) -> &mut Self {
         self.eax
             .set(ExtendedFeatureIdentification2Eax::PREFETCH_CTL_MSR, bit);
+        self
+    }
+
+    /// L2TLB sizes are encoded as multiples of 32.
+    pub fn has_l2_tlb_size_x32(&self) -> bool {
+        self.eax
+            .contains(ExtendedFeatureIdentification2Eax::L2_TLB_SIZE_X32)
+    }
+
+    pub fn set_l2_tlb_size_x32(&mut self, bit: bool) -> &mut Self {
+        self.eax
+            .set(ExtendedFeatureIdentification2Eax::L2_TLB_SIZE_X32, bit);
+        self
+    }
+
+    /// AMD implementation of Enhanced REP MOVSB/STOSB is supported.
+    pub fn has_amd_ermsb(&self) -> bool {
+        self.eax
+            .contains(ExtendedFeatureIdentification2Eax::AMD_ERMSB)
+    }
+
+    pub fn set_amd_ermsb(&mut self, bit: bool) -> &mut Self {
+        self.eax
+            .set(ExtendedFeatureIdentification2Eax::AMD_ERMSB, bit);
+        self
+    }
+
+    /// `0F 01/7` opcode space is reserved for AMD use.
+    pub fn has_opcode_0f_017_reclaim(&self) -> bool {
+        self.eax
+            .contains(ExtendedFeatureIdentification2Eax::OPCODE_0F017_RECLAIM)
+    }
+
+    pub fn set_opcode_0f_017_reclaim(&mut self, bit: bool) -> &mut Self {
+        self.eax
+            .set(ExtendedFeatureIdentification2Eax::OPCODE_0F017_RECLAIM, bit);
         self
     }
 
@@ -2892,14 +3223,146 @@ impl ExtendedFeatureIdentification2 {
         self
     }
 
+    /// Enhanced Predictive Store Forwarding supported.
+    pub fn has_epsf(&self) -> bool {
+        self.eax
+            .contains(ExtendedFeatureIdentification2Eax::EPSF)
+    }
+
+    pub fn set_epsf(&mut self, bit: bool) -> &mut Self {
+        self.eax
+            .set(ExtendedFeatureIdentification2Eax::EPSF, bit);
+        self
+    }
+
+    /// Fast short REP SCASB supported.
+    pub fn has_fast_rep_scasb(&self) -> bool {
+        self.eax
+            .contains(ExtendedFeatureIdentification2Eax::FAST_REP_SCASB)
+    }
+
+    pub fn set_fast_rep_scasb(&mut self, bit: bool) -> &mut Self {
+        self.eax
+            .set(ExtendedFeatureIdentification2Eax::FAST_REP_SCASB, bit);
+        self
+    }
+
+    /// IC prefetch supported.
+    pub fn has_prefetchi(&self) -> bool {
+        self.eax
+            .contains(ExtendedFeatureIdentification2Eax::PREFETCHI)
+    }
+
+    pub fn set_prefetchi(&mut self, bit: bool) -> &mut Self {
+        self.eax
+            .set(ExtendedFeatureIdentification2Eax::PREFETCHI, bit);
+        self
+    }
+
+    /// FP512 is downgraded to FP256.
+    pub fn has_fp512_downgrade(&self) -> bool {
+        self.eax
+            .contains(ExtendedFeatureIdentification2Eax::FP512_DOWNGRADE)
+    }
+
+    pub fn set_fp512_downgrade(&mut self, bit: bool) -> &mut Self {
+        self.eax
+            .set(ExtendedFeatureIdentification2Eax::FP512_DOWNGRADE, bit);
+        self
+    }
+
+    /// Enhanced Return Address Predictor Security supported.
+    pub fn has_eraps(&self) -> bool {
+        self.eax
+            .contains(ExtendedFeatureIdentification2Eax::ERAPS)
+    }
+
+    pub fn set_eraps(&mut self, bit: bool) -> &mut Self {
+        self.eax
+            .set(ExtendedFeatureIdentification2Eax::ERAPS, bit);
+        self
+    }
+
+    /// Selective Branch Predictor Barrier supported.
+    pub fn has_sbpb(&self) -> bool {
+        self.eax
+            .contains(ExtendedFeatureIdentification2Eax::SBPB)
+    }
+
+    pub fn set_sbpb(&mut self, bit: bool) -> &mut Self {
+        self.eax
+            .set(ExtendedFeatureIdentification2Eax::SBPB, bit);
+        self
+    }
+
+    /// PRED_CMD[IBPB] clears all branch type predictions from the branch predictor.
+    pub fn has_ibpb_brtype(&self) -> bool {
+        self.eax
+            .contains(ExtendedFeatureIdentification2Eax::IBPB_BRTYPE)
+    }
+
+    pub fn set_ibpb_brtype(&mut self, bit: bool) -> &mut Self {
+        self.eax
+            .set(ExtendedFeatureIdentification2Eax::IBPB_BRTYPE, bit);
+        self
+    }
+
+    /// The processor is not affected by Speculative Return Stack Overflow vulnerability.
+    pub fn has_srso_no(&self) -> bool {
+        self.eax
+            .contains(ExtendedFeatureIdentification2Eax::SRSO_NO)
+    }
+
+    pub fn set_srso_no(&mut self, bit: bool) -> &mut Self {
+        self.eax
+            .set(ExtendedFeatureIdentification2Eax::SRSO_NO, bit);
+        self
+    }
+
+    /// The processor is not affected by Speculative Return Stack Overflow vulnerability across
+    /// user/kernel boundaries.
+    pub fn has_srso_user_kernel_no(&self) -> bool {
+        self.eax
+            .contains(ExtendedFeatureIdentification2Eax::SRSO_USER_KERNEL_NO)
+    }
+
+    pub fn set_srso_user_kernel_no(&mut self, bit: bool) -> &mut Self {
+        self.eax
+            .set(ExtendedFeatureIdentification2Eax::SRSO_USER_KERNEL_NO, bit);
+        self
+    }
+
+    /// Software may use MSR_BP_CFG[BpSpecReduce] to mitigate Speculative Return Stack Overflow
+    /// vulnerability.
+    pub fn has_srso_msr_fix(&self) -> bool {
+        self.eax
+            .contains(ExtendedFeatureIdentification2Eax::SRSO_MSR_FIX)
+    }
+
+    pub fn set_srso_msr_fix(&mut self, bit: bool) -> &mut Self {
+        self.eax
+            .set(ExtendedFeatureIdentification2Eax::SRSO_MSR_FIX, bit);
+        self
+    }
+
     /// The size of the Microcode patch in 16-byte multiples. If 0, the size of the
     /// patch is at most 5568 (15C0h) bytes.
     pub fn microcode_patch_size(&self) -> u16 {
-        get_bits(self.ebx, 0, 11) as u16
+        get_bits(self.ebx, 0, 15) as u16
     }
 
-    pub fn microcode_patcset_size(&mut self, bits: u32) -> &mut Self {
-        set_bits(&mut self.ebx, bits, 0, 11);
+    pub fn set_microcode_patch_size(&mut self, bits: u32) -> &mut Self {
+        set_bits(&mut self.ebx, bits, 0, 15);
+        self
+    }
+
+    /// Return Address Predictor size.
+    pub fn rap_size(&self) -> u16 {
+        get_bits(self.ebx, 16, 23) as u16
+    }
+
+    pub fn set_rap_size(&mut self, bits: u32) -> &mut Self {
+        set_bits(&mut self.ebx, bits, 16, 23);
         self
     }
 }
@@ -2909,14 +3372,31 @@ bitflags! {
     #[derive(Debug, Clone, Copy, PartialEq, Eq)]
     pub(crate) struct ExtendedFeatureIdentification2Eax: u32 {
         const NO_NESTED_DATA_BP = 1 << 0;
+        const FS_GS_BASE_WRITE_NOT_SERIALIZING = 1 << 1;
         const LFENCE_ALWAYS_SERIALIZING = 1 << 2;
         const SMM_PG_CFG_LOCK = 1 << 3;
         const NULL_SELECT_CLEARS_BASE = 1 << 6;
         const UPPER_ADDRESS_IGNORE = 1 << 7;
         const AUTOMATIC_IBRS = 1 << 8;
         const NO_SMM_CTL_MSR = 1 << 9;
+        const FAST_SHORT_REP_STOSB = 1 << 10;
+        const FAST_SHORT_REPE_CMPSB = 1 << 11;
+        const PMC2_PRECISE_RETIRE = 1 << 12;
         const PREFETCH_CTL_MSR = 1 << 13;
+        const L2_TLB_SIZE_X32 = 1 << 14;
+        const AMD_ERMSB = 1 << 15;
+        const OPCODE_0F017_RECLAIM = 1 << 16;
         const CPUID_USER_DIS = 1 << 17;
+        const EPSF = 1 << 18;
+        const FAST_REP_SCASB = 1 << 19;
+        const PREFETCHI = 1 << 20;
+        const FP512_DOWNGRADE = 1 << 21;
+        const ERAPS = 1 << 24;
+        const SBPB = 1 << 27;
+        const IBPB_BRTYPE = 1 << 28;
+        const SRSO_NO = 1 << 29;
+        const SRSO_USER_KERNEL_NO = 1 << 30;
+        const SRSO_MSR_FIX = 1 << 31;
     }
 }
 
