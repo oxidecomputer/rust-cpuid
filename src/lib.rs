@@ -5031,9 +5031,9 @@ impl ExtendedFeatures {
     /// RDPID and IA32_TSC_AUX are available.
     ///
     /// # Bug
-    /// The Intel manual lists RDPID as bit 22 in the ECX register, but AMD
-    /// lists it as bit 22 in the ebx register. We assumed that the AMD manual
-    /// was wrong and query ecx, let's see what happens.
+    /// Some older versions of the AMD manual lists RDPID as bit 22 in EBX, but
+    /// Intel and later AMD manual versions list RDPID as bit 22 in ECX, where
+    /// it seems to have always been.
     ///
     /// # Platforms
     /// ✅ AMD ✅ Intel
@@ -5044,6 +5044,34 @@ impl ExtendedFeatures {
 
     pub fn set_rdpid(&mut self, bit: bool) -> &mut Self {
         self.ecx.set(ExtendedFeaturesEcx::RDPID, bit);
+        self
+    }
+
+    /// MOVDIRI instruction is available.
+    ///
+    /// # Platforms
+    /// ✅ AMD ✅ Intel
+    #[inline]
+    pub const fn has_movdiri(&self) -> bool {
+        self.ecx.contains(ExtendedFeaturesEcx::MOVDIRI)
+    }
+
+    pub fn set_movdiri(&mut self, bit: bool) -> &mut Self {
+        self.ecx.set(ExtendedFeaturesEcx::MOVDIRI, bit);
+        self
+    }
+
+    /// MOVDIR64B instruction is available.
+    ///
+    /// # Platforms
+    /// ✅ AMD ✅ Intel
+    #[inline]
+    pub const fn has_movdir64b(&self) -> bool {
+        self.ecx.contains(ExtendedFeaturesEcx::MOVDIR64B)
+    }
+
+    pub fn set_movdir64b(&mut self, bit: bool) -> &mut Self {
+        self.ecx.set(ExtendedFeaturesEcx::MOVDIR64B, bit);
         self
     }
 
@@ -5571,6 +5599,12 @@ bitflags! {
 
         /// Bit 22: RDPID. RDPID and IA32_TSC_AUX are available if 1.
         const RDPID = 1 << 22;
+
+        /// Bit 27: MOVDIRI. MOVDIRI instruction is available 1.
+        const MOVDIRI = 1 << 27;
+
+        /// Bit 28: MOVDIR64B. MOVDIR64B instruction is available 1.
+        const MOVDIR64B = 1 << 28;
 
         // Bits 29 - 23: Reserved.
 
